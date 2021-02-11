@@ -19,12 +19,19 @@ public extension DispatchQueue {
      - parameter token: Any instance such as a unique reverse DNS style string such as "com.vectorform.<name>" or a GUID
      - parameter block: Block to execute once (default is @noescape means the closure won't get called outside the context of this method.)
      */
-    class func lock(_ lock: Any, block: ()->() ) {
-        objc_sync_enter(self); defer { objc_sync_exit(self) }
+    class func lock(_ lock: Any, block: () -> () ) {
+        objc_sync_enter(self);
+        defer { objc_sync_exit(self) }
         block()
     }
     
-    class func synchronized<T>(_ lock: Any, _ block: () throws -> T) rethrows -> T {
+    class func lock(_ lock: Any, block: () throws -> () ) rethrows {
+        objc_sync_enter(self);
+        defer { objc_sync_exit(self) }
+        try block()
+    }
+    
+    class func lock<TValue>(_ lock: Any, _ block: () throws -> TValue) rethrows -> TValue {
         objc_sync_enter(self); defer { objc_sync_exit(self) }
         return try block()
     }
@@ -56,6 +63,4 @@ public extension DispatchQueue {
         }
     }
 
-
-    
 }
