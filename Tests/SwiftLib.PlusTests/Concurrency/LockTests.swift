@@ -4,13 +4,14 @@ import XCTest
 final class LockTests: XCTestCase {
     
     func testLockPerformance() {
-        _ = performanceTimer() {
+        let timeMs = performanceTimer(description: "\(#function), line: \(#line)", warningTimeMs: 100.0) {
             for _ in 1...100000 {
                 DispatchQueue.lock(self) {
                     /* no op */
                 }
             }
         }
+        XCTAssertTrue(timeMs < 100.0)
     }
     
     func testLockForStruct() {

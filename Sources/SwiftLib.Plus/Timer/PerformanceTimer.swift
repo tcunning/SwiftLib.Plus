@@ -6,9 +6,14 @@
 //
 import Foundation
 
-
-
-public func performanceTimer(block: () -> ()) -> Double
+/**
+ Used to track the performance of a block of code.
+ 
+ - parameter description: Description of the performance timer being run, used when outputting to log
+ - parameter warningTimeMs: If the time exceeds this value in milliseconds a log message will be generated
+ - parameter block: Block to execute once (default is @noescape means the closure won't get called outside the context of this method.)
+ */
+public func performanceTimer(description: String, warningTimeMs : Double? = nil, block: () -> ()) -> Double
 {
     let start = DispatchTime.now() // <<<<<<<<<< Start time
     block()
@@ -17,6 +22,9 @@ public func performanceTimer(block: () -> ()) -> Double
     let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
     let timeMs = Double(nanoTime) / 1_000_000   // inf if overflow
 
-    print("Completed in \(timeMs)ms")
+    if let warningTimeMs = warningTimeMs, timeMs > warningTimeMs  {
+        print("WARNING: \(description) completion time of \(timeMs)ms exceeded \(warningTimeMs)ms")
+    }
+    
     return timeMs
 }
