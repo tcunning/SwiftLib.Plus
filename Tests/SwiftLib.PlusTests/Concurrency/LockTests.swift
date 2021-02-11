@@ -3,6 +3,16 @@ import XCTest
 
 final class LockTests: XCTestCase {
     
+    func testLockPerformance() {
+        _ = performanceTimer() {
+            for _ in 1...100000 {
+                DispatchQueue.lock(self) {
+                    /* no op */
+                }
+            }
+        }
+    }
+    
     func testLockForStruct() {
         struct TestLocker {
         }
