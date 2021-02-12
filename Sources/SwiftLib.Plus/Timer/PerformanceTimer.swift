@@ -15,9 +15,9 @@ import Foundation
  */
 public func performanceTimer(description: String, warningTimeMs : Double? = nil, block: () -> ()) -> Double
 {
-    let start = DispatchTime.now() // <<<<<<<<<< Start time
+    let start = DispatchTime.now()
     block()
-    let end = DispatchTime.now()   // <<<<<<<<<<   end time
+    let end = DispatchTime.now()
 
     let nanoTime = end.uptimeNanoseconds - start.uptimeNanoseconds // <<<<< Difference in nano seconds (UInt64)
     let timeMs = Double(nanoTime) / 1_000_000   // inf if overflow
