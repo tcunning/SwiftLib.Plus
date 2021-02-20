@@ -50,3 +50,10 @@ Thumbs.db
 
 # XCode
 *.xcworkspace/
+.build/
+.build/*
+build/
+build/*
+xcuserdata/
+xcuserdata/*
+*.xcuserstate
